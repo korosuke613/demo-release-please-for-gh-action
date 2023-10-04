@@ -14,7 +14,8 @@ permissions:
 jobs:
   package:
     runs-on: ubuntu-latest
-    if: github.event.label.name == 'autorelease: pending'
+    if: "${{ contains(github.event.pull_request.labels.*.name, 'autorelease: pending') }}"
+
     steps:
       - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
 

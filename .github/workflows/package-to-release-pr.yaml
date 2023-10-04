@@ -2,6 +2,7 @@ name: release-please (package)
 
 on:
   pull_request:
+    types: [labeled]
     branches:
       - release-please--**
 
@@ -13,6 +14,7 @@ permissions:
 jobs:
   package:
     runs-on: ubuntu-latest
+    if: github.event.label.name == 'autorelease: pending'
     steps:
       - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
 

@@ -29,7 +29,7 @@ jobs:
         with:
           release-type: node
           package-name: typescript-action
-          extra-files: "dist/**"
+          extra-files: "dist"
 
       - name: tag major and minor versions
         if: ${{ steps.release.outputs.release_created }}

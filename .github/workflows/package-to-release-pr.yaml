@@ -38,8 +38,8 @@ jobs:
 
       - name: add commit
         run: |
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git config user.name demo-release-please-for-gh-action[bot]
+          git config user.email 147302814+demo-release-please-for-gh-action[bot]@users.noreply.github.com
           git remote add gh-token "https://${{ steps.app-token.outputs.token }}@github.com/korosuke613/demo-release-please-for-gh-action.git"
           git add ./dist
           git commit --amend --no-edit

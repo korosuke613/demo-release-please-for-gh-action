@@ -1,0 +1,39 @@
+name: release-please (package)
+
+on:
+  pull_request:
+    types: [opened, reopened, labeled]
+    branches:
+      - main
+
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    if: "${{ contains(github.event.pull_request.labels.*.name, 'autorelease: pending') }}"
+
+    steps:
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
+        with:
+          node-version: 18
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run package
+
+      - name: add commit
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add ./dist
+          git commit --amend --no-edit
+          git push --force origin HEAD

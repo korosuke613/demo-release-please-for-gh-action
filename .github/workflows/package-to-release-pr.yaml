@@ -43,3 +43,6 @@ jobs:
 
   check-dist:
     uses: ./.github/workflows/check-dist.yml
+    permissions:
+      contents: read
+      statuses: write

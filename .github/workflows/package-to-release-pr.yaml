@@ -2,9 +2,9 @@ name: release-please (package)
 
 on:
   pull_request:
-    types: [labeled]
+    types: [opened, reopened, labeled]
     branches:
-      - release-please--**
+      - main
 
 
 permissions:

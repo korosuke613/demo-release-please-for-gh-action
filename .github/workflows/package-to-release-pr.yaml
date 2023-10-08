@@ -8,8 +8,7 @@ on:
 
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
   package:
@@ -17,10 +16,16 @@ jobs:
     if: "${{ contains(github.event.pull_request.labels.*.name, 'autorelease: pending') }}"
 
     steps:
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+
       - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 1
+          fetch-depth: 2  # amend commit needs to fetch the base branch
 
       - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
         with:
@@ -35,6 +40,7 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git remote add gh-token "https://${{ steps.app-token.outputs.token }}@github.com/korosuke613/demo-release-please-for-gh-action.git"
           git add ./dist
           git commit --amend --no-edit
           git push --force origin HEAD

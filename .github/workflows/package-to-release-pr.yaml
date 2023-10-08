@@ -40,3 +40,6 @@ jobs:
           git add ./dist
           git commit --amend --no-edit
           git push --force origin HEAD
+
+  check-dist:
+    uses: ./.github/workflows/check-dist.yml

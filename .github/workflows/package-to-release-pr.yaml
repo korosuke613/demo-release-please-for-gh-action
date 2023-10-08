@@ -26,6 +26,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 2  # amend commit needs to fetch the base branch
+          token: ${{ steps.app-token.outputs.token }}
 
       - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
         with:
@@ -39,10 +40,9 @@ jobs:
       - name: add commit
         run: |
           GITHUB_USERNAME=demo-release-please-for-gh-action[bot]
-          GITHUB_EMAIL=${{ vars.GH_APP_ID }}+demo-release-please-for-gh-action[bot]@users.noreply.github.com
+          GITHUB_EMAIL=demo-release-please-for-gh-action[bot]@users.noreply.github.com
           git config user.name $GITHUB_USERNAME
           git config user.email $GITHUB_EMAIL
-          git remote set-url origin "https://${GITHUB_USERNAME}:${{ steps.app-token.outputs.token }}@github.com/korosuke613/demo-release-please-for-gh-action.git"
           git add ./dist
           git commit --amend --no-edit
           git push --force origin HEAD

@@ -2,13 +2,9 @@ name: release-please (package)
 
 on:
   pull_request:
-    types: [opened, reopened, labeled]
+    types: [opened, reopened, labeled, synchronize]
     branches:
       - main
-
-
-permissions:
-  contents: read
 
 jobs:
   package:
@@ -39,10 +35,11 @@ jobs:
 
       - name: add commit
         run: |
-          GITHUB_USERNAME=demo-release-please-for-gh-action[bot]
-          GITHUB_EMAIL=demo-release-please-for-gh-action[bot]@users.noreply.github.com
-          git config user.name $GITHUB_USERNAME
-          git config user.email $GITHUB_EMAIL
+          git config user.name demo-release-please-for-gh-action[bot]
+          git config user.email demo-release-please-for-gh-action[bot]@users.noreply.github.com
           git add ./dist
           git commit --amend --no-edit
           git push --force origin HEAD
+
+  check-dist:
+    uses: ./.github/workflows/check-dist.yml
